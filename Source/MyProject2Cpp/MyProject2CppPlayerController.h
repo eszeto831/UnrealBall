@@ -46,6 +46,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SetDashAction;
 
+	/** OptionsUI Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetOptionsUIAction;
+
 protected:
 	/** True if the controlled character should navigate to the mouse cursor. */
 	uint32 bMoveToMouseCursor : 1;
@@ -63,6 +67,8 @@ protected:
 	void OnTouchReleased();
 	void OnDashTriggered();
 	void OnDashReleased();
+	void OnOptionsUIStarted();
+	void OnOpenOptionsUI();
 
 private:
 	FVector CachedDestination;

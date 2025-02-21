@@ -61,6 +61,9 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnDashTriggered);
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnDashReleased);
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnDashReleased);
+
+		// Setup options UI events
+		EnhancedInputComponent->BindAction(SetOptionsUIAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnOptionsUIStarted);
 	}
 	else
 	{
@@ -132,7 +135,6 @@ void AMyProject2CppPlayerController::OnTouchReleased()
 	OnSetDestinationReleased();
 }
 
-// Triggered every frame when the input is held down
 void AMyProject2CppPlayerController::OnDashTriggered()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: dash!!!"));
@@ -143,4 +145,15 @@ void AMyProject2CppPlayerController::OnDashReleased()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: dash RELEASE!"));
 	OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnOptionsUIStarted()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: open options!"));
+	OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnOpenOptionsUI()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: open options FUNC!"));
 }
