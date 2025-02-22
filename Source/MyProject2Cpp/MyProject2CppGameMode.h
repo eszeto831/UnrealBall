@@ -13,6 +13,16 @@ class AMyProject2CppGameMode : public AGameModeBase
 
 public:
 	AMyProject2CppGameMode();
+	/*
+	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game Settings")
+	int TestInt;
+
+	UPROPERTY(EditAnywhere)
+	TSubclassOf<class UGameHUD> GameHUDClass;
+
+	UPROPERTY()
+	class UGameHUD* GameHUDInst;
+	*/
 };
 
 
