@@ -46,14 +46,10 @@ AMyProject2CppGameMode::AMyProject2CppGameMode()
 
 void AMyProject2CppGameMode::GameModeTick(float delta, UGameHUD* hud)
 {
-	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: game mode tick!!!"));
 	if (hud != nullptr)
 	{
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: game mode tick GOT HUD!!!"));
-
-		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: game mode tick %f", delta));
 		TimeLeft -= delta;
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("game mode tick %f -> %f"), delta, TimeLeft));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("game mode tick %f -> %f"), delta, TimeLeft));
 		hud->SetTime(TimeLeft);
 	}
 }
