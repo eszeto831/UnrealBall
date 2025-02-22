@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/GameModeBase.h"
+#include "UI/GameHUD.h"
 #include "MyProject2CppGameMode.generated.h"
 
 UCLASS(minimalapi)
@@ -13,6 +14,11 @@ class AMyProject2CppGameMode : public AGameModeBase
 
 public:
 	AMyProject2CppGameMode();
+
+	UFUNCTION(BlueprintCallable, Category = "Game Logic")
+	void GameModeTick(float delta, UGameHUD* hud);
+
+	float TimeLeft;
 	/*
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game Settings")
 	int TestInt;

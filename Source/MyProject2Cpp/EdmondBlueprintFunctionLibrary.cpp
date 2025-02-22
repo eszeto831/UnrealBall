@@ -11,7 +11,7 @@ FString UEdmondBlueprintFunctionLibrary::GetPointlessMessage()
 
 FString UEdmondBlueprintFunctionLibrary::GetPointlessMessage2()
 {
-	return FString(TEXT("pointless hellow world 2"));
+	return FString(TEXT("pointless hellow world 2 22"));
 }
 
 FString UEdmondBlueprintFunctionLibrary::GetPointlessMessage3()

@@ -7,6 +7,13 @@ void UGameHUD::SetTime(int i)
 {
 	if (TimerText)
 	{
-		//TimerText->SetText(i);
+		FString MyString = FString::Printf(TEXT("edmond :: game mode tick %d"), i);
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("%s"));
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT(*MyString));
+		//UE_LOG(LogTemp, Warning, TEXT("hello world"));
+		//UE_LOG(LogTemp, Warning, TEXT("%s"), *MyString);
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("hud tick %i"), i));
+		FText TextToSet = FText::FromString(FString::FromInt(i)); //FText::FromString(NewText);
+		TimerText->SetText(TextToSet);
 	}
 }

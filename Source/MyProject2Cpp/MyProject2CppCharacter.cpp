@@ -49,3 +49,8 @@ void AMyProject2CppCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
 }
+
+void AMyProject2CppCharacter::CharacterTick(float delta)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: char tick!!!"));
+}
