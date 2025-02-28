@@ -15,6 +15,12 @@ class AMyProject2CppGameMode : public AGameModeBase
 public:
 	AMyProject2CppGameMode();
 
+	virtual void BeginPlay() override;
+
+	void LoadPlayers();
+
+	int GetMaxPlayerCount();
+
 	UFUNCTION(BlueprintCallable, Category = "Game Logic")
 	void GameModeTick(float delta, UGameHUD* hud);
 

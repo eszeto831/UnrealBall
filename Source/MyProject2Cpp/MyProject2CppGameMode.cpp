@@ -42,6 +42,55 @@ AMyProject2CppGameMode::AMyProject2CppGameMode()
 	//GameHUDClass = nullptr;
 	//GameHUDInst = nullptr;
 	TimeLeft = 99;
+	
+	UE_LOG(LogTemp, Warning, TEXT("Hello World!"));
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: spawn actor 2!!!"));
+
+	//FActorSpawnParameters SpawnInfo;
+	//FRotator myRot(0, 0, 0);
+	//FVector myLoc(1000.0, 1810.0, 92.012604);
+	//AMyProject2CppCharacter* mySphere = GetWorld()->SpawnActor<AMyProject2CppCharacter>(AMyProject2CppCharacter::StaticClass(), myLoc, myRot, SpawnInfo);
+	
+	//LoadPlayers();
+}
+
+void AMyProject2CppGameMode::BeginPlay()
+{
+	Super::BeginPlay();
+
+	LoadPlayers();
+}
+
+void AMyProject2CppGameMode::LoadPlayers()
+{
+	UE_LOG(LogTemp, Warning, TEXT("game mode max players: %d"), GetMaxPlayerCount());
+	
+	if (GetMaxPlayerCount())
+	{
+		UE_LOG(LogTemp, Warning, TEXT("in if"));
+		UWorld* currentWorld = GetWorld();
+
+		UGameInstance* gameInstance = currentWorld->GetGameInstance();
+		UGameViewportClient* gameViewport = currentWorld->GetGameViewport();
+
+		// Remove split screen because I want a 2D game
+		gameViewport->SetForceDisableSplitscreen(true);
+
+		for (int32 a = 1; a <= GetMaxPlayerCount(); a++)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("game mode load player for loop: %d"), a);
+
+			FString error;
+			ULocalPlayer* localPlayer = gameInstance->CreateLocalPlayer(a, error, true);
+		}
+		
+	}
+	
+}
+
+int AMyProject2CppGameMode::GetMaxPlayerCount()
+{
+	return 4;
 }
 
 void AMyProject2CppGameMode::GameModeTick(float delta, UGameHUD* hud)
