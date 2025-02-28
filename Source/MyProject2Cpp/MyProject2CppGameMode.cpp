@@ -10,6 +10,9 @@
 
 AMyProject2CppGameMode::AMyProject2CppGameMode()
 {
+	PrimaryActorTick.bStartWithTickEnabled = true;
+	PrimaryActorTick.bCanEverTick = true;
+
 	// use our custom PlayerController class
 	PlayerControllerClass = AMyProject2CppPlayerController::StaticClass();
 
@@ -91,6 +94,14 @@ void AMyProject2CppGameMode::LoadPlayers()
 int AMyProject2CppGameMode::GetMaxPlayerCount()
 {
 	return 4;
+}
+
+
+void AMyProject2CppGameMode::Tick(float DeltaTime)
+{
+	Super::Tick(DeltaTime);
+	//UE_LOG(LogTemp, Warning, TEXT("game mode tick: %f"), DeltaTime);
+	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("game mode tick %f -> %f"), DeltaTime, 0));
 }
 
 void AMyProject2CppGameMode::GameModeTick(float delta, UGameHUD* hud)
