@@ -7,6 +7,9 @@
 #include "UI/GameHUD.h"
 #include "Blueprint/UserWidget.h"
 #include "GameFramework/HUD.h"
+#include "Kismet/GameplayStatics.h"
+#include "GameFramework/PlayerStart.h"
+#include "EngineUtils.h"
 
 AMyProject2CppGameMode::AMyProject2CppGameMode()
 {
@@ -64,6 +67,16 @@ void AMyProject2CppGameMode::BeginPlay()
 	LoadPlayers();
 }
 
+//Gets all the actors for me of my choosing and puts them into an array
+template<typename T>
+void FindAllActors(UWorld* World, TArray<T*>& Out)
+{
+	for (TActorIterator<T> It(World); It; ++It)
+	{
+		Out.Add(*It);
+	}
+}
+
 void AMyProject2CppGameMode::LoadPlayers()
 {
 	UE_LOG(LogTemp, Warning, TEXT("game mode max players: %d"), GetMaxPlayerCount());
@@ -78,15 +91,76 @@ void AMyProject2CppGameMode::LoadPlayers()
 
 		// Remove split screen because I want a 2D game
 		gameViewport->SetForceDisableSplitscreen(true);
+		/*
+		TArray<APlayerStart*> playerStart;
+		FindAllActors(currentWorld, playerStart);
+		int a = 1;
+		for (auto obj : playerStart)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("game mode load player for loop: %d"), a);
 
+			FString error;
+			ULocalPlayer* newPlayer = gameInstance->CreateLocalPlayer(a, error, true);
+			
+			if (newPlayer)
+			{
+				FVector spawnLocation = obj->GetActorLocation(); // Assuming 'this' is a Player Start actor
+				FRotator spawnRotation = obj->GetActorRotation();
+				
+				APlayerController* newController = newPlayer->GetPlayerController(currentWorld);
+				//APlayerController* newController = UGameplayStatics::CreatePlayer(GetWorld(), newPlayer->GetControllerId(), true, false);
+				if (newController)
+				{
+					APawn* newPawn = GetWorld()->SpawnActor<APawn>(DefaultPawnClass, spawnLocation, spawnRotation);
+					newController->Possess(newPawn);
+				}
+				
+			}
+			
+			a++;
+		}
+		*/
+		//FindPlayerStart()
+
+		
+		//TArray<AActor*> FoundActors;
+		//UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), FoundActors);
 		for (int32 a = 1; a <= GetMaxPlayerCount(); a++)
 		{
 			UE_LOG(LogTemp, Warning, TEXT("game mode load player for loop: %d"), a);
 
 			FString error;
-			ULocalPlayer* localPlayer = gameInstance->CreateLocalPlayer(a, error, true);
+			ULocalPlayer* newPlayer = gameInstance->CreateLocalPlayer(a, error, true);
+			
+			//APlayerStart* newPLayerStart = FoundActors[a - 1];
+
+			if (newPlayer)
+			{
+				//FVector spawnLocation = newPLayerStart->GetActorLocation(); // Assuming 'this' is a Player Start actor
+				//FRotator spawnRotation = newPLayerStart->GetActorRotation();
+				APlayerController* newController = newPlayer->GetPlayerController(currentWorld);
+				//APlayerController* newController = UGameplayStatics::CreatePlayer(GetWorld(), newPlayer->GetControllerId(), true, false);
+				if (newController)
+				{
+					FString IntAsString = FString::FromInt(a);
+					AActor* newPLayerStart = FindPlayerStart(newController, IntAsString);
+					if (newPLayerStart)
+					{
+						FVector spawnLocation = newPLayerStart->GetActorLocation(); // Assuming 'this' is a Player Start actor
+						FRotator spawnRotation = newPLayerStart->GetActorRotation();
+						APawn* newPawn = newController->GetPawn();
+						if (newPawn)
+						{
+							newPawn->SetActorLocation(spawnLocation, false, nullptr, ETeleportType::None);
+							newPawn->SetActorRotation(spawnRotation, ETeleportType::None);
+						}
+					}
+					//APawn* newPawn = GetWorld()->SpawnActor<APawn>(DefaultPawnClass, spawnLocation, spawnRotation);
+					//newController->Possess(newPawn);
+				}
+			}
+			
 		}
-		
 	}
 	
 }
