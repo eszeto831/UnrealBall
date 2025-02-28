@@ -43,6 +43,8 @@ AMyProject2CppCharacter::AMyProject2CppCharacter()
 	// Activate ticking in order to update the cursor every frame.
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
+
+	UE_LOG(LogTemp, Warning, TEXT("edmond :: creating char"));
 }
 
 void AMyProject2CppCharacter::Tick(float DeltaSeconds)

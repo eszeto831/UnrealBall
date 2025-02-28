@@ -20,13 +20,14 @@ AMyProject2CppGameMode::AMyProject2CppGameMode()
 	PlayerControllerClass = AMyProject2CppPlayerController::StaticClass();
 
 	// set default pawn class to our Blueprinted character
+	
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDown/Blueprints/BP_TopDownCharacter"));
 	if (PlayerPawnBPClass.Class != nullptr)
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: set player pawn class!!!"));
 		DefaultPawnClass = PlayerPawnBPClass.Class;
+		//SelectedPawnClass = PlayerPawnBPClass.Class;
 	}
-
 	// set default controller to our Blueprinted controller
 	static ConstructorHelpers::FClassFinder<APlayerController> PlayerControllerBPClass(TEXT("/Game/TopDown/Blueprints/BP_TopDownPlayerController"));
 	if(PlayerControllerBPClass.Class != NULL)
@@ -77,10 +78,18 @@ void FindAllActors(UWorld* World, TArray<T*>& Out)
 	}
 }
 
+void AMyProject2CppGameMode::PostLogin(APlayerController* NewPlayerController)
+{
+	Super::PostLogin(NewPlayerController);
+
+	//LoadPlayers();
+}
+
 void AMyProject2CppGameMode::LoadPlayers()
 {
 	UE_LOG(LogTemp, Warning, TEXT("game mode max players: %d"), GetMaxPlayerCount());
-	
+
+	//DefaultPawnClass = SelectedPawnClass;
 	if (GetMaxPlayerCount())
 	{
 		UE_LOG(LogTemp, Warning, TEXT("in if"));
@@ -125,32 +134,43 @@ void AMyProject2CppGameMode::LoadPlayers()
 		
 		//TArray<AActor*> FoundActors;
 		//UGameplayStatics::GetAllActorsOfClass(GetWorld(), APlayerStart::StaticClass(), FoundActors);
-		for (int32 a = 1; a <= GetMaxPlayerCount(); a++)
+		//for (int32 a = 1; a <= GetMaxPlayerCount(); a++)
+		for (int32 a = 0; a < GetMaxPlayerCount(); a++)
 		{
-			UE_LOG(LogTemp, Warning, TEXT("game mode load player for loop: %d"), a);
+			UE_LOG(LogTemp, Warning, TEXT("edmond :: game mode load player for loop: %d"), a);
 
 			FString error;
 			ULocalPlayer* newPlayer = gameInstance->CreateLocalPlayer(a, error, true);
 			
 			//APlayerStart* newPLayerStart = FoundActors[a - 1];
 
+			if (!newPlayer)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("edmond :: already have player: %d"), a);
+				newPlayer = gameInstance->GetLocalPlayerByIndex(a);
+			}
+
 			if (newPlayer)
 			{
+				UE_LOG(LogTemp, Warning, TEXT("edmond :: got player: %d"), a);
 				//FVector spawnLocation = newPLayerStart->GetActorLocation(); // Assuming 'this' is a Player Start actor
 				//FRotator spawnRotation = newPLayerStart->GetActorRotation();
 				APlayerController* newController = newPlayer->GetPlayerController(currentWorld);
 				//APlayerController* newController = UGameplayStatics::CreatePlayer(GetWorld(), newPlayer->GetControllerId(), true, false);
 				if (newController)
 				{
-					FString IntAsString = FString::FromInt(a);
+					UE_LOG(LogTemp, Warning, TEXT("edmond :: got controller: %d"), a);
+					FString IntAsString = FString::FromInt(a + 1);
 					AActor* newPLayerStart = FindPlayerStart(newController, IntAsString);
 					if (newPLayerStart)
 					{
+						UE_LOG(LogTemp, Warning, TEXT("edmond :: got player start: %d"), a);
 						FVector spawnLocation = newPLayerStart->GetActorLocation(); // Assuming 'this' is a Player Start actor
 						FRotator spawnRotation = newPLayerStart->GetActorRotation();
 						APawn* newPawn = newController->GetPawn();
 						if (newPawn)
 						{
+							UE_LOG(LogTemp, Warning, TEXT("edmond :: got pawn: %d"), a);
 							newPawn->SetActorLocation(spawnLocation, false, nullptr, ETeleportType::None);
 							newPawn->SetActorRotation(spawnRotation, ETeleportType::None);
 						}
@@ -159,7 +179,6 @@ void AMyProject2CppGameMode::LoadPlayers()
 					//newController->Possess(newPawn);
 				}
 			}
-			
 		}
 	}
 	

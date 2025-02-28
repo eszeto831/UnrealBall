@@ -16,8 +16,12 @@ public:
 	AMyProject2CppGameMode();
 
 	virtual void BeginPlay() override;
+	virtual void PostLogin(APlayerController*) override;
 
 	virtual void Tick(float DeltaTime) override;
+
+	//virtual AActor* SpawnDefaultPawnFor(AController* NewPlayer, FTransform const& SpawnTransform) override;
+	//virtual APawn* SpawnDefaultPawnFor(AController* NewPlayer, AActor* StartSpot) override;
 
 	void LoadPlayers();
 
@@ -27,6 +31,7 @@ public:
 	void GameModeTick(float delta, UGameHUD* hud);
 
 	float TimeLeft;
+	TSubclassOf<APawn> SelectedPawnClass;
 	/*
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game Settings")
 	int TestInt;
