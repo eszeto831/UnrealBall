@@ -19,10 +19,4 @@ public:
 	ASpikeBallGameState();
 	virtual void BeginPlay() override;
 	virtual void Tick(float DeltaTime) override;
-
-	void CreateHUDWidget();
-
-	float TimeLeft;
-	TSubclassOf<UUserWidget> GameHUDClass;
-	UGameHUD* GameHUDWidgetInst;
 };

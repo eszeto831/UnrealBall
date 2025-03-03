@@ -3,6 +3,7 @@
 #include "MyProject2CppGameMode.h"
 #include "MyProject2CppPlayerController.h"
 #include "MyProject2CppCharacter.h"
+#include "SpikeBallGameState.h"
 #include "UObject/ConstructorHelpers.h"
 #include "UI/GameHUD.h"
 #include "Blueprint/UserWidget.h"
@@ -16,11 +17,12 @@ AMyProject2CppGameMode::AMyProject2CppGameMode()
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	PrimaryActorTick.bCanEverTick = true;
 
+	GameStateClass = ASpikeBallGameState::StaticClass();
+
 	// use our custom PlayerController class
 	PlayerControllerClass = AMyProject2CppPlayerController::StaticClass();
 
 	// set default pawn class to our Blueprinted character
-	
 	static ConstructorHelpers::FClassFinder<APawn> PlayerPawnBPClass(TEXT("/Game/TopDown/Blueprints/BP_TopDownCharacter"));
 	if (PlayerPawnBPClass.Class != nullptr)
 	{
