@@ -48,15 +48,16 @@ AMyProject2CppGameMode::AMyProject2CppGameMode()
 
 	//GameHUDClass = nullptr;
 	//GameHUDInst = nullptr;
+	
 	static ConstructorHelpers::FClassFinder<UUserWidget> GameHUDWidgetClass(TEXT("/Game/TopDown/UI/GameHUD"));
-	if (GameHUDBPClass.Class != NULL)
+	if (GameHUDWidgetClass.Class != NULL)
 	{
 		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: set HUD class!!!"));
 		GameHUDClass = GameHUDWidgetClass.Class;
 	}
 	TimeLeft = 99;
 	
-	UE_LOG(LogTemp, Warning, TEXT("Hello World!"));
+	UE_LOG(LogTemp, Warning, TEXT("Hello World! 1"));
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: spawn actor 2!!!"));
 
 	//FActorSpawnParameters SpawnInfo;
@@ -70,6 +71,7 @@ AMyProject2CppGameMode::AMyProject2CppGameMode()
 void AMyProject2CppGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("edmond :: begin play"));
 
 	CreateHUDWidget();
 
@@ -80,7 +82,7 @@ void AMyProject2CppGameMode::CreateHUDWidget()
 {
 	UE_LOG(LogTemp, Warning, TEXT("edmond :: hud name: %s"), *GameHUDClass->GetName());
 	//NEED GAME INSTANCE
-	UUserWidget* NewWidgetInst = CreateWidget<UUserWidget>(this, GameHUDClass);
+	UUserWidget* NewWidgetInst = CreateWidget<UUserWidget>(GetWorld(), GameHUDClass);
 	GameHUDWidgetInst = Cast<UGameHUD>(NewWidgetInst);
 	GameHUDWidgetInst->AddToViewport();
 	UE_LOG(LogTemp, Warning, TEXT("edmond :: hud inst name: %s"), *GameHUDWidgetInst->GetName());
