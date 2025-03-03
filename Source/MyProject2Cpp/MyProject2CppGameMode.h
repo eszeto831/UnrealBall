@@ -23,6 +23,7 @@ public:
 	//virtual AActor* SpawnDefaultPawnFor(AController* NewPlayer, FTransform const& SpawnTransform) override;
 	//virtual APawn* SpawnDefaultPawnFor(AController* NewPlayer, AActor* StartSpot) override;
 
+	void CreateHUDWidget();
 	void LoadPlayers();
 
 	int GetMaxPlayerCount();
@@ -32,6 +33,8 @@ public:
 
 	float TimeLeft;
 	TSubclassOf<APawn> SelectedPawnClass;
+	TSubclassOf<UUserWidget> GameHUDClass;
+	UGameHUD* GameHUDWidgetInst;
 	/*
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game Settings")
 	int TestInt;

@@ -48,9 +48,16 @@ AMyProject2CppGameMode::AMyProject2CppGameMode()
 
 	//GameHUDClass = nullptr;
 	//GameHUDInst = nullptr;
+	
+	static ConstructorHelpers::FClassFinder<UUserWidget> GameHUDWidgetClass(TEXT("/Game/TopDown/UI/GameHUD"));
+	if (GameHUDWidgetClass.Class != NULL)
+	{
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: set HUD class!!!"));
+		GameHUDClass = GameHUDWidgetClass.Class;
+	}
 	TimeLeft = 99;
 	
-	UE_LOG(LogTemp, Warning, TEXT("Hello World!"));
+	UE_LOG(LogTemp, Warning, TEXT("Hello World! 1"));
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: spawn actor 2!!!"));
 
 	//FActorSpawnParameters SpawnInfo;
@@ -64,8 +71,21 @@ AMyProject2CppGameMode::AMyProject2CppGameMode()
 void AMyProject2CppGameMode::BeginPlay()
 {
 	Super::BeginPlay();
+	UE_LOG(LogTemp, Warning, TEXT("edmond :: begin play"));
+
+	CreateHUDWidget();
 
 	LoadPlayers();
+}
+
+void AMyProject2CppGameMode::CreateHUDWidget()
+{
+	UE_LOG(LogTemp, Warning, TEXT("edmond :: hud name: %s"), *GameHUDClass->GetName());
+	//NEED GAME INSTANCE
+	UUserWidget* NewWidgetInst = CreateWidget<UUserWidget>(GetWorld(), GameHUDClass);
+	GameHUDWidgetInst = Cast<UGameHUD>(NewWidgetInst);
+	GameHUDWidgetInst->AddToViewport();
+	UE_LOG(LogTemp, Warning, TEXT("edmond :: hud inst name: %s"), *GameHUDWidgetInst->GetName());
 }
 
 //Gets all the actors for me of my choosing and puts them into an array
@@ -87,7 +107,7 @@ void AMyProject2CppGameMode::PostLogin(APlayerController* NewPlayerController)
 
 void AMyProject2CppGameMode::LoadPlayers()
 {
-	UE_LOG(LogTemp, Warning, TEXT("game mode max players: %d"), GetMaxPlayerCount());
+	UE_LOG(LogTemp, Warning, TEXT("edmond :: game mode max players: %d"), GetMaxPlayerCount());
 
 	//DefaultPawnClass = SelectedPawnClass;
 	if (GetMaxPlayerCount())
@@ -193,6 +213,13 @@ int AMyProject2CppGameMode::GetMaxPlayerCount()
 void AMyProject2CppGameMode::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (GameHUDWidgetInst != nullptr)
+	{
+		TimeLeft -= DeltaTime;
+		//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("game mode tick %f -> %f"), delta, TimeLeft));
+		GameHUDWidgetInst->SetTime(TimeLeft);
+	}
 	//UE_LOG(LogTemp, Warning, TEXT("game mode tick: %f"), DeltaTime);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("game mode tick %f -> %f"), DeltaTime, 0));
 }
