@@ -62,6 +62,12 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnDashReleased);
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnDashReleased);
 
+		// Setup dash events
+		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnMovementTriggered);
+		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleased);
+		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMovementReleased);
+
 		// Setup options UI events
 		EnhancedInputComponent->BindAction(SetOptionsUIAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnOptionsUIStarted);
 	}
@@ -132,6 +138,20 @@ void AMyProject2CppPlayerController::OnTouchTriggered()
 void AMyProject2CppPlayerController::OnTouchReleased()
 {
 	bIsTouch = false;
+	OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnMovementTriggered(const FInputActionValue& Value)
+{
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move!!! %f"), InputValue));
+	OnSetDestinationTriggered();
+}
+
+void AMyProject2CppPlayerController::OnMovementReleased(const FInputActionValue& Value)
+{
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move RELEASE!!! %f"), InputValue));
 	OnSetDestinationReleased();
 }
 
