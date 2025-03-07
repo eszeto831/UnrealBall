@@ -35,6 +35,7 @@ public:
 	TSubclassOf<APawn> SelectedPawnClass;
 	TSubclassOf<UUserWidget> GameHUDClass;
 	UGameHUD* GameHUDWidgetInst;
+	int Ticks;
 	/*
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Game Settings")
 	int TestInt;

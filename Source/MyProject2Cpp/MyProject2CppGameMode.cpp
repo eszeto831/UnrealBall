@@ -11,6 +11,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerStart.h"
 #include "EngineUtils.h"
+#include "EnhancedInputSubsystems.h"
+#include "InputMappingContext.h"
 
 AMyProject2CppGameMode::AMyProject2CppGameMode()
 {
@@ -119,23 +121,47 @@ void AMyProject2CppGameMode::LoadPlayers()
 			if (newPlayer)
 			{
 				UE_LOG(LogTemp, Warning, TEXT("edmond :: got player: %d"), a);
+
 				APlayerController* newController = newPlayer->GetPlayerController(currentWorld);
 				if (newController)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("edmond :: got controller: %d"), a);
-					FString IntAsString = FString::FromInt(a + 1);
-					AActor* newPLayerStart = FindPlayerStart(newController, IntAsString);
-					if (newPLayerStart)
+
+					UEnhancedInputLocalPlayerSubsystem* InputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(newController->GetLocalPlayer());
+					if (InputSystem)
 					{
-						UE_LOG(LogTemp, Warning, TEXT("edmond :: got player start: %d"), a);
-						FVector spawnLocation = newPLayerStart->GetActorLocation(); // Assuming 'this' is a Player Start actor
-						FRotator spawnRotation = newPLayerStart->GetActorRotation();
-						APawn* newPawn = newController->GetPawn();
-						if (newPawn)
+						UE_LOG(LogTemp, Warning, TEXT("edmond :: got input system: %d controllerid %d"), a, newController->GetLocalPlayer()->GetControllerId());
+						UE_LOG(LogTemp, Warning, TEXT("edmond :: got input systems controllerid %d"), a, InputSystem->GetLocalPlayer()->GetControllerId());
+						FString inputSystemName = FString::Printf(TEXT("/Game/TopDown/Input/IMC_Default_Player%d"), a + 1);
+						//FString inputSystemName = FString::Printf(TEXT("/Game/TopDown/Input/IMC_Default_Player%d"), 2);
+						//static ConstructorHelpers::FObjectFinder<UInputMappingContext> tmp2(TEXT(inputSystemName));
+						//static ConstructorHelpers::FObjectFinder<UInputMappingContext> tmp2(*inputSystemName);
+						//UInputMappingContext* InputMapping = tmp2.Object;
+
+						UInputMappingContext* InputMapping = Cast<UInputMappingContext>(StaticLoadObject(UInputMappingContext::StaticClass(), NULL, *inputSystemName, NULL, LOAD_None, NULL));
+
+
+						if (InputMapping)
 						{
-							UE_LOG(LogTemp, Warning, TEXT("edmond :: got pawn: %d"), a);
-							newPawn->SetActorLocation(spawnLocation, false, nullptr, ETeleportType::None);
-							newPawn->SetActorRotation(spawnRotation, ETeleportType::None);
+							UE_LOG(LogTemp, Warning, TEXT("edmond :: got input mapping: %d"), a);
+							InputSystem->AddMappingContext(InputMapping, 0);
+
+							FString IntAsString = FString::FromInt(a + 1);
+							AActor* newPLayerStart = FindPlayerStart(newController, IntAsString);
+							if (newPLayerStart)
+							{
+								UE_LOG(LogTemp, Warning, TEXT("edmond :: got player start: %d"), a);
+								FVector spawnLocation = newPLayerStart->GetActorLocation(); // Assuming 'this' is a Player Start actor
+								FRotator spawnRotation = newPLayerStart->GetActorRotation();
+								APawn* newPawn = newController->GetPawn();
+								if (newPawn)
+								{
+									//newController->Possess(newPawn);
+									UE_LOG(LogTemp, Warning, TEXT("edmond :: got pawn: %d"), a);
+									newPawn->SetActorLocation(spawnLocation, false, nullptr, ETeleportType::None);
+									newPawn->SetActorRotation(spawnRotation, ETeleportType::None);
+								}
+							}
 						}
 					}
 				}
@@ -163,6 +189,13 @@ void AMyProject2CppGameMode::Tick(float DeltaTime)
 	}
 	//UE_LOG(LogTemp, Warning, TEXT("game mode tick: %f"), DeltaTime);
 	//GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("game mode tick %f -> %f"), DeltaTime, 0));
+
+	Ticks++;
+	if (Ticks == 100)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("edmond :: load players ar tick : %d"), Ticks);
+		LoadPlayers();
+	}
 }
 
 void AMyProject2CppGameMode::GameModeTick(float delta, UGameHUD* hud)
