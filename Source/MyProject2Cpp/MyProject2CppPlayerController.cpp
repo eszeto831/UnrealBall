@@ -44,6 +44,7 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 	// Set up action bindings
 	if (UEnhancedInputComponent* EnhancedInputComponent = Cast<UEnhancedInputComponent>(InputComponent))
 	{
+		/*
 		// Setup mouse input events
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
 		EnhancedInputComponent->BindAction(SetDestinationClickAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnSetDestinationTriggered);
@@ -55,14 +56,14 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnTouchTriggered);
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnTouchReleased);
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnTouchReleased);
-
+		*/
 		// Setup dash events
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnDashTriggered);
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnDashReleased);
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnDashReleased);
 
-		// Setup dash events
+		// Setup movement events
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnMovementTriggered);
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleased);
@@ -85,6 +86,12 @@ void AMyProject2CppPlayerController::OnInputStarted()
 // Triggered every frame when the input is held down
 void AMyProject2CppPlayerController::OnSetDestinationTriggered()
 {
+	return;
+	/*
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: NO!!! %f"), 0));
+
+
+
 	// We flag that the input is being pressed
 	FollowTime += GetWorld()->GetDeltaSeconds();
 	
@@ -113,10 +120,17 @@ void AMyProject2CppPlayerController::OnSetDestinationTriggered()
 		FVector WorldDirection = (CachedDestination - ControlledPawn->GetActorLocation()).GetSafeNormal();
 		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
 	}
+	*/
 }
 
 void AMyProject2CppPlayerController::OnSetDestinationReleased()
 {
+	return;
+	/*
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: NO!!! %f"), 0));
+
+
+
 	// If it was a short press
 	if (FollowTime <= ShortPressThreshold)
 	{
@@ -126,6 +140,7 @@ void AMyProject2CppPlayerController::OnSetDestinationReleased()
 	}
 
 	FollowTime = 0.f;
+	*/
 }
 
 // Triggered every frame when the input is held down
@@ -145,7 +160,27 @@ void AMyProject2CppPlayerController::OnMovementTriggered(const FInputActionValue
 {
 	float InputValue = Value.Get<float>();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move!!! %f"), InputValue));
-	OnSetDestinationTriggered();
+	//OnSetDestinationTriggered();
+
+	APawn* ControlledPawn = GetPawn();
+	if (ControlledPawn != nullptr)
+	{
+		//FVector WorldDirection = FVector(InputValue, ControlledPawn->GetActorLocation().Y, 0);
+		FVector WorldDirection = FVector(0, 1, 0);
+		if (InputValue < 0)
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: neg 1!!! %f"), 1));
+			WorldDirection = FVector(0, -1, 0);
+		}
+		else
+		{
+			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: 1!!! %f"), 1));
+		}
+		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
+
+	}
+
+	//UAIBlueprintHelperLibrary::SimpleMoveToLocation(this, CachedDestination);
 }
 
 void AMyProject2CppPlayerController::OnMovementReleased(const FInputActionValue& Value)
