@@ -47,6 +47,18 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SetMoveAction;
 
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetMoveActionPlayer2;
+
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetMoveActionPlayer3;
+
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetMoveActionPlayer4;
+
 	/** Dash Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SetDashAction;
@@ -66,16 +78,27 @@ protected:
 
 	/** Input handlers for SetDestination action. */
 	void OnInputStarted();
+	void OnInputStartedPlayer2();
+	void OnInputStartedPlayer3();
+	void OnInputStartedPlayer4();
 	void OnSetDestinationTriggered();
 	void OnSetDestinationReleased();
 	void OnTouchTriggered();
 	void OnTouchReleased();
 	void OnMovementTriggered(const FInputActionValue& Value);
 	void OnMovementReleased(const FInputActionValue& Value);
+	void OnMovementTriggeredPlayer2(const FInputActionValue& Value);
+	void OnMovementReleasedPlayer2(const FInputActionValue& Value);
+	void OnMovementTriggeredPlayer3(const FInputActionValue& Value);
+	void OnMovementReleasedPlayer3(const FInputActionValue& Value);
+	void OnMovementTriggeredPlayer4(const FInputActionValue& Value);
+	void OnMovementReleasedPlayer4(const FInputActionValue& Value);
 	void OnDashTriggered();
 	void OnDashReleased();
 	void OnOptionsUIStarted();
 	void OnOpenOptionsUI();
+
+	void MovePlayerPawn(APawn* ControlledPawn, float InputValue);
 
 private:
 	FVector CachedDestination;

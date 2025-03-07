@@ -11,6 +11,7 @@
 #include "InputActionValue.h"
 #include "EnhancedInputSubsystems.h"
 #include "Engine/LocalPlayer.h"
+#include "Kismet/GameplayStatics.h"
 
 DEFINE_LOG_CATEGORY(LogTemplateCharacter);
 
@@ -69,6 +70,24 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleased);
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMovementReleased);
 
+		// Setup movement events
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer2, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStartedPlayer2);
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer2, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnMovementTriggeredPlayer2);
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer2, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleasedPlayer2);
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer2, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMovementReleasedPlayer2);
+
+		// Setup movement events
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer3, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStartedPlayer3);
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer3, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnMovementTriggeredPlayer3);
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer3, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleasedPlayer3);
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer3, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMovementReleasedPlayer3);
+
+		// Setup movement events
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer4, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStartedPlayer4);
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer4, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnMovementTriggeredPlayer4);
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer4, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleasedPlayer4);
+		EnhancedInputComponent->BindAction(SetMoveActionPlayer4, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMovementReleasedPlayer4);
+
 		// Setup options UI events
 		EnhancedInputComponent->BindAction(SetOptionsUIAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnOptionsUIStarted);
 	}
@@ -80,7 +99,50 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 
 void AMyProject2CppPlayerController::OnInputStarted()
 {
-	StopMovement();
+	//StopMovement();
+	APlayerController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	APawn* ControlledPawn = Controller->GetPawn();
+	float InputValue = 0;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: stop!!! %f"), InputValue));
+	//OnSetDestinationTriggered();
+
+	MovePlayerPawn(ControlledPawn, InputValue);
+}
+
+void AMyProject2CppPlayerController::OnInputStartedPlayer2()
+{
+	//StopMovement();
+	APlayerController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 1);
+	APawn* ControlledPawn = Controller->GetPawn();
+	float InputValue = 0;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: stop!!! player2 %f"), InputValue));
+	//OnSetDestinationTriggered();
+
+	MovePlayerPawn(ControlledPawn, InputValue);
+}
+
+void AMyProject2CppPlayerController::OnInputStartedPlayer3()
+{
+	//StopMovement();
+	APlayerController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 2);
+	APawn* ControlledPawn = Controller->GetPawn();
+	float InputValue = 0;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: stop!!! player3 %f"), InputValue));
+	//OnSetDestinationTriggered();
+
+	MovePlayerPawn(ControlledPawn, InputValue);
+}
+
+void AMyProject2CppPlayerController::OnInputStartedPlayer4()
+{
+	//StopMovement();
+	APlayerController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 3);
+	APawn* ControlledPawn = Controller->GetPawn();
+	float InputValue = 0;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: stop!!! player4 %f"), InputValue));
+	//OnSetDestinationTriggered();
+
+	MovePlayerPawn(ControlledPawn, InputValue);
 }
 
 // Triggered every frame when the input is held down
@@ -158,22 +220,62 @@ void AMyProject2CppPlayerController::OnTouchReleased()
 
 void AMyProject2CppPlayerController::OnMovementTriggered(const FInputActionValue& Value)
 {
+	APlayerController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 0);
+	APawn* ControlledPawn = Controller->GetPawn();
 	float InputValue = Value.Get<float>();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move!!! %f"), InputValue));
 	//OnSetDestinationTriggered();
 
-	APawn* ControlledPawn = GetPawn();
+	MovePlayerPawn(ControlledPawn, InputValue);
+}
+
+void AMyProject2CppPlayerController::OnMovementTriggeredPlayer2(const FInputActionValue& Value)
+{
+	APlayerController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 1);
+	APawn* ControlledPawn = Controller->GetPawn();
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move player 2!!! %f"), InputValue));
+	//OnSetDestinationTriggered();
+
+	MovePlayerPawn(ControlledPawn, InputValue);
+}
+
+void AMyProject2CppPlayerController::OnMovementTriggeredPlayer3(const FInputActionValue& Value)
+{
+	APlayerController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 2);
+	APawn* ControlledPawn = Controller->GetPawn();
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move player 3!!! %f"), InputValue));
+	//OnSetDestinationTriggered();
+
+	MovePlayerPawn(ControlledPawn, InputValue);
+}
+
+void AMyProject2CppPlayerController::OnMovementTriggeredPlayer4(const FInputActionValue& Value)
+{
+	APlayerController* Controller = UGameplayStatics::GetPlayerController(GetWorld(), 3);
+	APawn* ControlledPawn = Controller->GetPawn();
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move player 4!!! %f"), InputValue));
+	//OnSetDestinationTriggered();
+
+	MovePlayerPawn(ControlledPawn, InputValue);
+}
+
+void AMyProject2CppPlayerController::MovePlayerPawn(APawn* ControlledPawn, float InputValue)
+{
 	if (ControlledPawn != nullptr)
 	{
 		//FVector WorldDirection = FVector(InputValue, ControlledPawn->GetActorLocation().Y, 0);
-		FVector WorldDirection = FVector(0, 1, 0);
-		if (InputValue < 0)
+		FVector WorldDirection = FVector(0, 0, 0);
+		if (InputValue > 0)
 		{
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: neg 1!!! %f"), 1));
-			WorldDirection = FVector(0, -1, 0);
+			WorldDirection = FVector(0, 1, 0);
 		}
-		else
+		else if(InputValue < 0)
 		{
+			WorldDirection = FVector(0, -1, 0);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: 1!!! %f"), 1));
 		}
 		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
@@ -184,6 +286,27 @@ void AMyProject2CppPlayerController::OnMovementTriggered(const FInputActionValue
 }
 
 void AMyProject2CppPlayerController::OnMovementReleased(const FInputActionValue& Value)
+{
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move RELEASE!!! %f"), InputValue));
+	OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnMovementReleasedPlayer2(const FInputActionValue& Value)
+{
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move RELEASE!!! %f"), InputValue));
+	OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnMovementReleasedPlayer3(const FInputActionValue& Value)
+{
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move RELEASE!!! %f"), InputValue));
+	OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnMovementReleasedPlayer4(const FInputActionValue& Value)
 {
 	float InputValue = Value.Get<float>();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move RELEASE!!! %f"), InputValue));
