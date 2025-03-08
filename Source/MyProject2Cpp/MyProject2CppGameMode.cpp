@@ -126,7 +126,7 @@ void AMyProject2CppGameMode::LoadPlayers()
 				if (newController)
 				{
 					UE_LOG(LogTemp, Warning, TEXT("edmond :: got controller: %d"), a);
-
+					/*
 					UEnhancedInputLocalPlayerSubsystem* InputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(newController->GetLocalPlayer());
 					if (InputSystem)
 					{
@@ -164,11 +164,58 @@ void AMyProject2CppGameMode::LoadPlayers()
 							}
 						}
 					}
+					*/
 				}
 			}
 		}
 	}
 	
+}
+
+void AMyProject2CppGameMode::HandleStartingNewPlayer_Implementation(APlayerController* NewPlayerController)
+{
+	Super::HandleStartingNewPlayer_Implementation(NewPlayerController);
+
+	UE_LOG(LogTemp, Warning, TEXT("edmond :: handle new player controller id: %d"), NewPlayerController->GetLocalPlayer()->GetControllerId());
+	int a = NewPlayerController->GetLocalPlayer()->GetControllerId();
+
+	UEnhancedInputLocalPlayerSubsystem* InputSystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(NewPlayerController->GetLocalPlayer());
+	if (InputSystem)
+	{
+		UE_LOG(LogTemp, Warning, TEXT("edmond :: got input system: %d controllerid %d"), a, NewPlayerController->GetLocalPlayer()->GetControllerId());
+		UE_LOG(LogTemp, Warning, TEXT("edmond :: got input systems controllerid %d"), a, InputSystem->GetLocalPlayer()->GetControllerId());
+		FString inputSystemName = FString::Printf(TEXT("/Game/TopDown/Input/IMC_Default_Player%d"), a + 1);
+		//FString inputSystemName = FString::Printf(TEXT("/Game/TopDown/Input/IMC_Default_Player%d"), 2);
+		//static ConstructorHelpers::FObjectFinder<UInputMappingContext> tmp2(TEXT(inputSystemName));
+		//static ConstructorHelpers::FObjectFinder<UInputMappingContext> tmp2(*inputSystemName);
+		//UInputMappingContext* InputMapping = tmp2.Object;
+
+		UInputMappingContext* InputMapping = Cast<UInputMappingContext>(StaticLoadObject(UInputMappingContext::StaticClass(), NULL, *inputSystemName, NULL, LOAD_None, NULL));
+
+
+		if (InputMapping)
+		{
+			UE_LOG(LogTemp, Warning, TEXT("edmond :: got input mapping: %d"), a);
+			InputSystem->AddMappingContext(InputMapping, 0);
+
+			FString IntAsString = FString::FromInt(a + 1);
+			AActor* newPLayerStart = FindPlayerStart(NewPlayerController, IntAsString);
+			if (newPLayerStart)
+			{
+				UE_LOG(LogTemp, Warning, TEXT("edmond :: got player start: %d"), a);
+				FVector spawnLocation = newPLayerStart->GetActorLocation(); // Assuming 'this' is a Player Start actor
+				FRotator spawnRotation = newPLayerStart->GetActorRotation();
+				APawn* newPawn = NewPlayerController->GetPawn();
+				if (newPawn)
+				{
+					//newController->Possess(newPawn);
+					UE_LOG(LogTemp, Warning, TEXT("edmond :: got pawn: %d"), a);
+					newPawn->SetActorLocation(spawnLocation, false, nullptr, ETeleportType::None);
+					newPawn->SetActorRotation(spawnRotation, ETeleportType::None);
+				}
+			}
+		}
+	}
 }
 
 int AMyProject2CppGameMode::GetMaxPlayerCount()

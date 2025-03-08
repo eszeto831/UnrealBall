@@ -20,6 +20,8 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
+	virtual void HandleStartingNewPlayer_Implementation(APlayerController* NewPlayer) override;
+
 	//virtual AActor* SpawnDefaultPawnFor(AController* NewPlayer, FTransform const& SpawnTransform) override;
 	//virtual APawn* SpawnDefaultPawnFor(AController* NewPlayer, AActor* StartSpot) override;
 
@@ -46,6 +48,8 @@ public:
 	UPROPERTY()
 	class UGameHUD* GameHUDInst;
 	*/
+//public:
+	//virtual void HandleStartNewPlayer(APlayerController* NewPlayerController) override;
 };
 
 
