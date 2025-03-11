@@ -48,20 +48,8 @@ public:
 	UInputAction* SetMoveAction;
 
 	/** Move Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* SetMoveActionPlayer2;
-
-	/** Move Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* SetMoveActionPlayer3;
-
-	/** Move Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* SetMoveActionPlayer4;
-
-	/** Move Input Action */
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
-	UInputAction* SetMoveActionPad;
+	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	//UInputAction* SetMoveActionPlayer1;
 
 	/** Dash Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -82,24 +70,15 @@ protected:
 
 	/** Input handlers for SetDestination action. */
 	void OnInputStarted();
-	void OnInputStartedPlayer2();
-	void OnInputStartedPlayer3();
-	void OnInputStartedPlayer4();
-	void OnInputStartedPad();
+	//void OnInputStartedPlayer1();
 	void OnSetDestinationTriggered();
 	void OnSetDestinationReleased();
 	void OnTouchTriggered();
 	void OnTouchReleased();
 	void OnMovementTriggered(const FInputActionValue& Value);
 	void OnMovementReleased(const FInputActionValue& Value);
-	void OnMovementTriggeredPlayer2(const FInputActionValue& Value);
-	void OnMovementReleasedPlayer2(const FInputActionValue& Value);
-	void OnMovementTriggeredPlayer3(const FInputActionValue& Value);
-	void OnMovementReleasedPlayer3(const FInputActionValue& Value);
-	void OnMovementTriggeredPlayer4(const FInputActionValue& Value);
-	void OnMovementReleasedPlayer4(const FInputActionValue& Value);
-	void OnMovementTriggeredPad(const FInputActionValue& Value);
-	void OnMovementReleasedPad(const FInputActionValue& Value);
+	//void OnMovementTriggeredPlayer1(const FInputActionValue& Value);
+	//void OnMovementReleasedPlayer1(const FInputActionValue& Value);
 	void OnDashTriggered();
 	void OnDashReleased();
 	void OnOptionsUIStarted();
