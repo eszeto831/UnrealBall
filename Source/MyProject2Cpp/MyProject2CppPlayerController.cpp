@@ -58,17 +58,24 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnTouchReleased);
 		EnhancedInputComponent->BindAction(SetDestinationTouchAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnTouchReleased);
 		*/
-		// Setup dash events
-		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
-		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnDashTriggered);
-		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnDashReleased);
-		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnDashReleased);
 
 		// Setup movement events
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnMovementTriggered);
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleased);
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMovementReleased);
+
+		// Setup dash events
+		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnDashTriggered);
+		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnDashReleased);
+		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnDashReleased);
+
+		// Setup jump events
+		EnhancedInputComponent->BindAction(SetJumpAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetJumpAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnJumpTriggered);
+		EnhancedInputComponent->BindAction(SetJumpAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnJumpReleased);
+		EnhancedInputComponent->BindAction(SetJumpAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnJumpReleased);
 
 		/*
 		// Setup movement events
@@ -95,7 +102,7 @@ void AMyProject2CppPlayerController::OnInputStarted()
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: stop!!! pad %f"), InputValue));
 	//OnSetDestinationTriggered();
 
-	MovePlayerPawn(ControlledPawn, InputValue);
+	PlayerPawnMove(ControlledPawn, InputValue);
 }
 /*
 void AMyProject2CppPlayerController::OnInputStartedPlayer1()
@@ -191,7 +198,7 @@ void AMyProject2CppPlayerController::OnMovementTriggered(const FInputActionValue
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move pad!!! %f"), InputValue));
 	//OnSetDestinationTriggered();
 
-	MovePlayerPawn(ControlledPawn, InputValue);
+	PlayerPawnMove(ControlledPawn, InputValue);
 }
 /*
 void AMyProject2CppPlayerController::OnMovementTriggeredPlayer1(const FInputActionValue& Value)
@@ -206,7 +213,7 @@ void AMyProject2CppPlayerController::OnMovementTriggeredPlayer1(const FInputActi
 }
 */
 
-void AMyProject2CppPlayerController::MovePlayerPawn(APawn* ControlledPawn, float InputValue)
+void AMyProject2CppPlayerController::PlayerPawnMove(APawn* ControlledPawn, float InputValue)
 {
 	if (ControlledPawn != nullptr)
 	{
@@ -252,6 +259,29 @@ void AMyProject2CppPlayerController::OnDashTriggered()
 void AMyProject2CppPlayerController::OnDashReleased()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: dash RELEASE!"));
+	OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnJumpTriggered()
+{
+	ACharacter* ControlledCharacter = GetCharacter();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: jump pad!!! %f"), 1));
+	//OnSetDestinationTriggered();
+
+	PlayerPawnJump(ControlledCharacter);
+}
+
+void AMyProject2CppPlayerController::PlayerPawnJump(ACharacter* ControlledCharacter)
+{
+	if (ControlledCharacter != nullptr)
+	{
+		ControlledCharacter->Jump();
+	}
+}
+
+void AMyProject2CppPlayerController::OnJumpReleased()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: jump RELEASE!"));
 	OnSetDestinationReleased();
 }
 

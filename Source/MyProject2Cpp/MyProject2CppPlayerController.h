@@ -51,6 +51,10 @@ public:
 	//UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	//UInputAction* SetMoveActionPlayer1;
 
+	/** Jump Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetJumpAction;
+
 	/** Dash Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SetDashAction;
@@ -81,10 +85,13 @@ protected:
 	//void OnMovementReleasedPlayer1(const FInputActionValue& Value);
 	void OnDashTriggered();
 	void OnDashReleased();
+	void OnJumpTriggered();
+	void OnJumpReleased();
 	void OnOptionsUIStarted();
 	void OnOpenOptionsUI();
 
-	void MovePlayerPawn(APawn* ControlledPawn, float InputValue);
+	void PlayerPawnMove(APawn* ControlledPawn, float InputValue);
+	void PlayerPawnJump(ACharacter* ControlledCharacter);
 
 private:
 	FVector CachedDestination;
