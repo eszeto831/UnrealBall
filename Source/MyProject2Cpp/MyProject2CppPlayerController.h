@@ -59,6 +59,10 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SetMoveActionPlayer4;
 
+	/** Move Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetMoveActionPad;
+
 	/** Dash Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SetDashAction;
@@ -81,6 +85,7 @@ protected:
 	void OnInputStartedPlayer2();
 	void OnInputStartedPlayer3();
 	void OnInputStartedPlayer4();
+	void OnInputStartedPad();
 	void OnSetDestinationTriggered();
 	void OnSetDestinationReleased();
 	void OnTouchTriggered();
@@ -93,6 +98,8 @@ protected:
 	void OnMovementReleasedPlayer3(const FInputActionValue& Value);
 	void OnMovementTriggeredPlayer4(const FInputActionValue& Value);
 	void OnMovementReleasedPlayer4(const FInputActionValue& Value);
+	void OnMovementTriggeredPad(const FInputActionValue& Value);
+	void OnMovementReleasedPad(const FInputActionValue& Value);
 	void OnDashTriggered();
 	void OnDashReleased();
 	void OnOptionsUIStarted();

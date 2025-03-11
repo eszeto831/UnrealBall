@@ -88,6 +88,12 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetMoveActionPlayer4, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleasedPlayer4);
 		EnhancedInputComponent->BindAction(SetMoveActionPlayer4, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMovementReleasedPlayer4);
 
+		// Setup movement events
+		EnhancedInputComponent->BindAction(SetMoveActionPad, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStartedPad);
+		EnhancedInputComponent->BindAction(SetMoveActionPad, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnMovementTriggeredPad);
+		EnhancedInputComponent->BindAction(SetMoveActionPad, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleasedPad);
+		EnhancedInputComponent->BindAction(SetMoveActionPad, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMovementReleasedPad);
+
 		// Setup options UI events
 		EnhancedInputComponent->BindAction(SetOptionsUIAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnOptionsUIStarted);
 	}
@@ -140,6 +146,17 @@ void AMyProject2CppPlayerController::OnInputStartedPlayer4()
 	APawn* ControlledPawn = Controller->GetPawn();
 	float InputValue = 0;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: stop!!! player4 %f"), InputValue));
+	//OnSetDestinationTriggered();
+
+	MovePlayerPawn(ControlledPawn, InputValue);
+}
+
+void AMyProject2CppPlayerController::OnInputStartedPad()
+{
+	//StopMovement();
+	APawn* ControlledPawn = GetPawn();
+	float InputValue = 0;
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: stop!!! pad %f"), InputValue));
 	//OnSetDestinationTriggered();
 
 	MovePlayerPawn(ControlledPawn, InputValue);
@@ -262,6 +279,16 @@ void AMyProject2CppPlayerController::OnMovementTriggeredPlayer4(const FInputActi
 	MovePlayerPawn(ControlledPawn, InputValue);
 }
 
+void AMyProject2CppPlayerController::OnMovementTriggeredPad(const FInputActionValue& Value)
+{
+	APawn* ControlledPawn = GetPawn();
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move pad!!! %f"), InputValue));
+	//OnSetDestinationTriggered();
+
+	MovePlayerPawn(ControlledPawn, InputValue);
+}
+
 void AMyProject2CppPlayerController::MovePlayerPawn(APawn* ControlledPawn, float InputValue)
 {
 	if (ControlledPawn != nullptr)
@@ -307,6 +334,13 @@ void AMyProject2CppPlayerController::OnMovementReleasedPlayer3(const FInputActio
 }
 
 void AMyProject2CppPlayerController::OnMovementReleasedPlayer4(const FInputActionValue& Value)
+{
+	float InputValue = Value.Get<float>();
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move RELEASE!!! %f"), InputValue));
+	OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnMovementReleasedPad(const FInputActionValue& Value)
 {
 	float InputValue = Value.Get<float>();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move RELEASE!!! %f"), InputValue));
