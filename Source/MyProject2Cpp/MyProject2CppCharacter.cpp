@@ -44,6 +44,10 @@ AMyProject2CppCharacter::AMyProject2CppCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
+	useLightAttack = false;
+	useMediumAttack = false;
+	useHardAttack = false;
+
 	UE_LOG(LogTemp, Warning, TEXT("edmond :: creating char"));
 }
 
@@ -55,4 +59,22 @@ void AMyProject2CppCharacter::Tick(float DeltaSeconds)
 void AMyProject2CppCharacter::CharacterTick(float delta)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: char tick!!!"));
+}
+
+void AMyProject2CppCharacter::AttackLight()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: light attack"));
+	useLightAttack = true;
+}
+
+void AMyProject2CppCharacter::AttackMedium()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: med attack"));
+	useMediumAttack = true;
+}
+
+void AMyProject2CppCharacter::AttackHard()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: hard attack"));
+	useHardAttack = true;
 }

@@ -253,13 +253,15 @@ void AMyProject2CppPlayerController::OnMovementReleasedPlayer1(const FInputActio
 void AMyProject2CppPlayerController::OnDashTriggered()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: dash!!!"));
-	OnSetDestinationTriggered();
+	ACharacter* ControlledCharacter = GetCharacter();
+	AMyProject2CppCharacter* FighterCharacter = Cast<AMyProject2CppCharacter>(ControlledCharacter);
+	FighterCharacter->AttackLight();
 }
 
 void AMyProject2CppPlayerController::OnDashReleased()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: dash RELEASE!"));
-	OnSetDestinationReleased();
+	//OnSetDestinationReleased();
 }
 
 void AMyProject2CppPlayerController::OnJumpTriggered()

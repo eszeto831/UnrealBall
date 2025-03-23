@@ -25,6 +25,27 @@ public:
 	UFUNCTION(BlueprintCallable, Category = "Game Logic")
 	void CharacterTick(float delta);
 
+	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
+	void AttackLight();
+
+	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
+	void AttackMedium();
+
+	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
+	void AttackHard();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+	bool useLightAttack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+	bool useMediumAttack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+	bool useHardAttack;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Health")
+	bool playerHealth;
+
 private:
 	/** Top down camera */
 	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = Camera, meta = (AllowPrivateAccess = "true"))
