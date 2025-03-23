@@ -26,6 +26,12 @@ public:
 	void CharacterTick(float delta);
 
 	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
+	void CrouchIdle();
+
+	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
+	void Dash();
+
+	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
 	void AttackLight();
 
 	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
@@ -33,6 +39,12 @@ public:
 
 	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
 	void AttackHard();
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+	bool useCrouchIdle;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
+	bool useDash;
 
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Attacks")
 	bool useLightAttack;

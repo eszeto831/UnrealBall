@@ -44,6 +44,8 @@ AMyProject2CppCharacter::AMyProject2CppCharacter()
 	PrimaryActorTick.bCanEverTick = true;
 	PrimaryActorTick.bStartWithTickEnabled = true;
 
+	useCrouchIdle = false;
+	useDash = false;
 	useLightAttack = false;
 	useMediumAttack = false;
 	useHardAttack = false;
@@ -59,6 +61,18 @@ void AMyProject2CppCharacter::Tick(float DeltaSeconds)
 void AMyProject2CppCharacter::CharacterTick(float delta)
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: char tick!!!"));
+}
+
+void AMyProject2CppCharacter::CrouchIdle()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: crouch"));
+	useCrouchIdle = true;
+}
+
+void AMyProject2CppCharacter::Dash()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: dash"));
+	useDash = true;
 }
 
 void AMyProject2CppCharacter::AttackLight()
