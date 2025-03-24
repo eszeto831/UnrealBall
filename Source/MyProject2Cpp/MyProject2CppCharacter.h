@@ -26,6 +26,12 @@ public:
 	void CharacterTick(float delta);
 
 	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
+	void CharacterMove(FVector worldDirection);
+
+	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
+	void CharacterJump();
+
+	UFUNCTION(BlueprintCallable, Category = "Attack Logic")
 	void CrouchIdle();
 
 	UFUNCTION(BlueprintCallable, Category = "Attack Logic")

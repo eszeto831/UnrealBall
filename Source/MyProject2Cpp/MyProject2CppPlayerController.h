@@ -6,6 +6,7 @@
 #include "Templates/SubclassOf.h"
 #include "GameFramework/PlayerController.h"
 #include "InputAction.h"
+#include "MyProject2CppCharacter.h"
 #include "MyProject2CppPlayerController.generated.h"
 
 /** Forward declaration to improve compiling times */
@@ -114,8 +115,8 @@ protected:
 	void OnOptionsUIStarted();
 	void OnOpenOptionsUI();
 
-	void PlayerPawnMove(APawn* ControlledPawn, float InputValue);
-	void PlayerPawnJump(ACharacter* ControlledCharacter);
+	void PlayerPawnMove(AMyProject2CppCharacter* FighterCharacter, float InputValue);
+	void PlayerPawnJump(AMyProject2CppCharacter* FighterCharacter);
 
 private:
 	FVector CachedDestination;

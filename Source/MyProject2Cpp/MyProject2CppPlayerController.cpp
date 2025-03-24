@@ -121,12 +121,13 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 void AMyProject2CppPlayerController::OnInputStarted()
 {
 	//StopMovement();
-	APawn* ControlledPawn = GetPawn();
+	ACharacter* ControlledCharacter = GetCharacter();
+	AMyProject2CppCharacter* FighterCharacter = Cast<AMyProject2CppCharacter>(ControlledCharacter);
 	float InputValue = 0;
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: stop!!! pad %f"), InputValue));
 	//OnSetDestinationTriggered();
 
-	PlayerPawnMove(ControlledPawn, InputValue);
+	PlayerPawnMove(FighterCharacter, InputValue);
 }
 /*
 void AMyProject2CppPlayerController::OnInputStartedPlayer1()
@@ -217,12 +218,13 @@ void AMyProject2CppPlayerController::OnTouchReleased()
 
 void AMyProject2CppPlayerController::OnMovementTriggered(const FInputActionValue& Value)
 {
-	APawn* ControlledPawn = GetPawn();
+	ACharacter* ControlledCharacter = GetCharacter();
+	AMyProject2CppCharacter* FighterCharacter = Cast<AMyProject2CppCharacter>(ControlledCharacter);
 	float InputValue = Value.Get<float>();
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: move pad!!! %f"), InputValue));
 	//OnSetDestinationTriggered();
 
-	PlayerPawnMove(ControlledPawn, InputValue);
+	PlayerPawnMove(FighterCharacter, InputValue);
 }
 /*
 void AMyProject2CppPlayerController::OnMovementTriggeredPlayer1(const FInputActionValue& Value)
@@ -237,9 +239,9 @@ void AMyProject2CppPlayerController::OnMovementTriggeredPlayer1(const FInputActi
 }
 */
 
-void AMyProject2CppPlayerController::PlayerPawnMove(APawn* ControlledPawn, float InputValue)
+void AMyProject2CppPlayerController::PlayerPawnMove(AMyProject2CppCharacter* FighterCharacter, float InputValue)
 {
-	if (ControlledPawn != nullptr)
+	if (FighterCharacter != nullptr)
 	{
 		//FVector WorldDirection = FVector(InputValue, ControlledPawn->GetActorLocation().Y, 0);
 		FVector WorldDirection = FVector(0, 0, 0);
@@ -253,7 +255,7 @@ void AMyProject2CppPlayerController::PlayerPawnMove(APawn* ControlledPawn, float
 			WorldDirection = FVector(0, -1, 0);
 			GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: 1!!! %f"), 1));
 		}
-		ControlledPawn->AddMovementInput(WorldDirection, 1.0, false);
+		FighterCharacter->CharacterMove(WorldDirection);
 
 	}
 
@@ -305,17 +307,18 @@ void AMyProject2CppPlayerController::OnDashReleased()
 void AMyProject2CppPlayerController::OnJumpTriggered()
 {
 	ACharacter* ControlledCharacter = GetCharacter();
+	AMyProject2CppCharacter* FighterCharacter = Cast<AMyProject2CppCharacter>(ControlledCharacter);
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::Printf(TEXT("edmond :: jump pad!!! %f"), 1));
 	//OnSetDestinationTriggered();
 
-	PlayerPawnJump(ControlledCharacter);
+	PlayerPawnJump(FighterCharacter);
 }
 
-void AMyProject2CppPlayerController::PlayerPawnJump(ACharacter* ControlledCharacter)
+void AMyProject2CppPlayerController::PlayerPawnJump(AMyProject2CppCharacter* FighterCharacter)
 {
-	if (ControlledCharacter != nullptr)
+	if (FighterCharacter != nullptr)
 	{
-		ControlledCharacter->Jump();
+		FighterCharacter->CharacterJump();
 	}
 }
 

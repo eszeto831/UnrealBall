@@ -51,6 +51,18 @@ void AMyProject2CppCharacter::CharacterTick(float delta)
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: char call tick!!!"));
 }
 
+void AMyProject2CppCharacter::CharacterMove(FVector worldDirection)
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: crouch"));
+	AddMovementInput(worldDirection, 1.0, false);
+}
+
+void AMyProject2CppCharacter::CharacterJump()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: crouch"));
+	Jump();
+}
+
 void AMyProject2CppCharacter::CrouchIdle()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: crouch"));
