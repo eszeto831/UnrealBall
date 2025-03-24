@@ -65,6 +65,12 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMovementReleased);
 		EnhancedInputComponent->BindAction(SetMoveAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMovementReleased);
 
+		// Setup crouch events
+		EnhancedInputComponent->BindAction(SetCrouchAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetCrouchAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnCrouchTriggered);
+		EnhancedInputComponent->BindAction(SetCrouchAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnCrouchReleased);
+		EnhancedInputComponent->BindAction(SetCrouchAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnCrouchReleased);
+
 		// Setup dash events
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
 		EnhancedInputComponent->BindAction(SetDashAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnDashTriggered);
@@ -76,6 +82,24 @@ void AMyProject2CppPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(SetJumpAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnJumpTriggered);
 		EnhancedInputComponent->BindAction(SetJumpAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnJumpReleased);
 		EnhancedInputComponent->BindAction(SetJumpAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnJumpReleased);
+
+		// Setup light attack events
+		EnhancedInputComponent->BindAction(SetLightAttackAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetLightAttackAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnLightAttackTriggered);
+		EnhancedInputComponent->BindAction(SetLightAttackAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnLightAttackReleased);
+		EnhancedInputComponent->BindAction(SetLightAttackAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnLightAttackReleased);
+
+		// Setup medium attack events
+		EnhancedInputComponent->BindAction(SetMediumAttackAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetMediumAttackAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnMediumAttackTriggered);
+		EnhancedInputComponent->BindAction(SetMediumAttackAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnMediumAttackReleased);
+		EnhancedInputComponent->BindAction(SetMediumAttackAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnMediumAttackReleased);
+
+		// Setup hard attack events
+		EnhancedInputComponent->BindAction(SetHardAttackAction, ETriggerEvent::Started, this, &AMyProject2CppPlayerController::OnInputStarted);
+		EnhancedInputComponent->BindAction(SetHardAttackAction, ETriggerEvent::Triggered, this, &AMyProject2CppPlayerController::OnHardAttackTriggered);
+		EnhancedInputComponent->BindAction(SetHardAttackAction, ETriggerEvent::Completed, this, &AMyProject2CppPlayerController::OnHardAttackReleased);
+		EnhancedInputComponent->BindAction(SetHardAttackAction, ETriggerEvent::Canceled, this, &AMyProject2CppPlayerController::OnHardAttackReleased);
 
 		/*
 		// Setup movement events
@@ -250,16 +274,32 @@ void AMyProject2CppPlayerController::OnMovementReleasedPlayer1(const FInputActio
 	OnSetDestinationReleased();
 }
 */
+void AMyProject2CppPlayerController::OnCrouchTriggered()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: crouch!!!"));
+	ACharacter* ControlledCharacter = GetCharacter();
+	AMyProject2CppCharacter* FighterCharacter = Cast<AMyProject2CppCharacter>(ControlledCharacter);
+	FighterCharacter->CrouchIdle();
+}
+
+void AMyProject2CppPlayerController::OnCrouchReleased()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: crouch RELEASE!"));
+	//OnSetDestinationReleased();
+}
+
 void AMyProject2CppPlayerController::OnDashTriggered()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: dash!!!"));
-	OnSetDestinationTriggered();
+	ACharacter* ControlledCharacter = GetCharacter();
+	AMyProject2CppCharacter* FighterCharacter = Cast<AMyProject2CppCharacter>(ControlledCharacter);
+	FighterCharacter->Dash();
 }
 
 void AMyProject2CppPlayerController::OnDashReleased()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: dash RELEASE!"));
-	OnSetDestinationReleased();
+	//OnSetDestinationReleased();
 }
 
 void AMyProject2CppPlayerController::OnJumpTriggered()
@@ -283,6 +323,48 @@ void AMyProject2CppPlayerController::OnJumpReleased()
 {
 	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: jump RELEASE!"));
 	OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnLightAttackTriggered()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: light attack!!!"));
+	ACharacter* ControlledCharacter = GetCharacter();
+	AMyProject2CppCharacter* FighterCharacter = Cast<AMyProject2CppCharacter>(ControlledCharacter);
+	FighterCharacter->AttackLight();
+}
+
+void AMyProject2CppPlayerController::OnLightAttackReleased()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: light attack RELEASE!"));
+	//OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnMediumAttackTriggered()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: Medium attack!!!"));
+	ACharacter* ControlledCharacter = GetCharacter();
+	AMyProject2CppCharacter* FighterCharacter = Cast<AMyProject2CppCharacter>(ControlledCharacter);
+	FighterCharacter->AttackMedium();
+}
+
+void AMyProject2CppPlayerController::OnMediumAttackReleased()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: Medium attack RELEASE!"));
+	//OnSetDestinationReleased();
+}
+
+void AMyProject2CppPlayerController::OnHardAttackTriggered()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: Hard attack!!!"));
+	ACharacter* ControlledCharacter = GetCharacter();
+	AMyProject2CppCharacter* FighterCharacter = Cast<AMyProject2CppCharacter>(ControlledCharacter);
+	FighterCharacter->AttackHard();
+}
+
+void AMyProject2CppPlayerController::OnHardAttackReleased()
+{
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: Hard attack RELEASE!"));
+	//OnSetDestinationReleased();
 }
 
 void AMyProject2CppPlayerController::OnOptionsUIStarted()

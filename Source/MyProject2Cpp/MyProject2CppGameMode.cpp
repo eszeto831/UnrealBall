@@ -49,7 +49,7 @@ AMyProject2CppGameMode::AMyProject2CppGameMode()
 	}
 	TimeLeft = 99;
 	
-	UE_LOG(LogTemp, Warning, TEXT("Hello World! 2"));
+	UE_LOG(LogTemp, Warning, TEXT("Hello World! 4"));
 }
 
 void AMyProject2CppGameMode::BeginPlay()

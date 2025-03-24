@@ -55,9 +55,25 @@ public:
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SetJumpAction;
 
+	/** Crouch Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetCrouchAction;
+
 	/** Dash Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
 	UInputAction* SetDashAction;
+
+	/** Light Attack Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetLightAttackAction;
+
+	/** Medium Attack Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetMediumAttackAction;
+
+	/** Hard Attack Input Action */
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
+	UInputAction* SetHardAttackAction;
 
 	/** OptionsUI Input Action */
 	UPROPERTY(EditAnywhere, BlueprintReadOnly, Category = Input, meta = (AllowPrivateAccess = "true"))
@@ -83,10 +99,18 @@ protected:
 	void OnMovementReleased(const FInputActionValue& Value);
 	//void OnMovementTriggeredPlayer1(const FInputActionValue& Value);
 	//void OnMovementReleasedPlayer1(const FInputActionValue& Value);
+	void OnCrouchTriggered();
+	void OnCrouchReleased();
 	void OnDashTriggered();
 	void OnDashReleased();
 	void OnJumpTriggered();
 	void OnJumpReleased();
+	void OnLightAttackTriggered();
+	void OnLightAttackReleased();
+	void OnMediumAttackTriggered();
+	void OnMediumAttackReleased();
+	void OnHardAttackTriggered();
+	void OnHardAttackReleased();
 	void OnOptionsUIStarted();
 	void OnOpenOptionsUI();
 
