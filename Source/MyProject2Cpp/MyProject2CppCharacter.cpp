@@ -56,11 +56,12 @@ AMyProject2CppCharacter::AMyProject2CppCharacter()
 void AMyProject2CppCharacter::Tick(float DeltaSeconds)
 {
     Super::Tick(DeltaSeconds);
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: char normal tick!!!"));
 }
 
 void AMyProject2CppCharacter::CharacterTick(float delta)
 {
-	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: char tick!!!"));
+	GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("edmond :: char call tick!!!"));
 }
 
 void AMyProject2CppCharacter::CrouchIdle()
